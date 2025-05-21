@@ -38,19 +38,16 @@ tasks.test {
     useJUnitPlatform()
 }
 
-// ✅ 添加 shadowJar 配置
 tasks.named<ShadowJar>("shadowJar") {
     archiveBaseName.set("snake-game")
-    archiveClassifier.set("") // 不加 -all 后缀
+    archiveClassifier.set("")
     archiveVersion.set("1.0")
-    // 替换为你的主类名
     manifest {
         attributes["Main-Class"] = "cn.xiuxius.snake.Application"
     }
-    mergeServiceFiles() // 可选：处理 META-INF/services 冲突
 }
 
-// ✅ 设置构建默认生成 shadowJar 而非普通 jar（可选）
+
 tasks.build {
     dependsOn(tasks.shadowJar)
 }

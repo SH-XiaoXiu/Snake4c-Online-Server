@@ -2,7 +2,7 @@
 <configuration>
     <property name="LOG_HOME" value="logs"/>
     <property name="encoding" value="UTF-8"/>
-    <conversionRule conversionWord="clr" converterClass="cn.xiuxius.snake.log.ColorConverter"/>
+    <conversionRule conversionWord="clr" converterClass="cn.xiuxius.snake.config.ColorConverter"/>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){RED} %clr([%15.15t]){BLUE} %clr(%-5level) %clr(%logger{36}){GREEN} - %clr(%msg){WHITE}%n</pattern>

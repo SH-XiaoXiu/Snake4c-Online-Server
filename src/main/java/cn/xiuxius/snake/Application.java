@@ -62,7 +62,7 @@ public class Application {
                 try {
                     gameRoom.gameTick();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    log.error("Game Loop Error", e);
                 }
                 long cost = System.currentTimeMillis() - startTime;
                 if (cost > Application.DELTA_TIME + 5) {
