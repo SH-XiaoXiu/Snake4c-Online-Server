@@ -7,27 +7,26 @@ import cn.xiuxius.snake.packet.ServerBoundType;
 
 public class ServerBoundPlayerInitPacket extends ServerBoundPacket {
 
-    private String playerId;
+    private String playerName;
 
+    public String getPlayerName() {
+        return playerName;
+    }
 
-    public ServerBoundPlayerInitPacket(String playerId) {
-        this.playerId = playerId;
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
+
+    public ServerBoundPlayerInitPacket(String playerName) {
+        this.playerName = playerName;
         setType(ServerBoundType.INIT);
-    }
-
-    public void setPlayerId(String playerId) {
-        this.playerId = playerId;
-    }
-
-    public String getPlayerId() {
-        return playerId;
     }
 
     @Override
     public String json() {
         JSONObject obj = JSONUtil.createObj();
         obj.set("type", getType().name());
-        obj.set("playerId", playerId);
+        obj.set("playerName", playerName);
         return obj.toJSONString(0);
     }
 

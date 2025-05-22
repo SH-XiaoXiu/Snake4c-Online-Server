@@ -45,6 +45,7 @@ tasks.named<ShadowJar>("shadowJar") {
     manifest {
         attributes["Main-Class"] = "cn.xiuxius.snake.Application"
     }
+    mergeServiceFiles()
 }
 
 

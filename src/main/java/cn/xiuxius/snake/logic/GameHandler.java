@@ -1,5 +1,6 @@
 package cn.xiuxius.snake.logic;
 
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.xiuxius.snake.packet.ServerBoundType;
@@ -18,11 +19,10 @@ public class GameHandler extends SimpleChannelInboundHandler<String> {
 
     private static final GameRoom gameRoom = new GameRoom();
 
-    private String playerId;
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        playerId = UUID.randomUUID().toString();
+        String playerId = UUID.randomUUID().toString();
         Player player = gameRoom.addPlayer(playerId, ctx.channel());
         ClientBoundPlayerJoinPacket joinPacket = new ClientBoundPlayerJoinPacket(player, gameRoom.getPlayers().size());
         getGameRoom().getPackets().offer(joinPacket);
@@ -62,7 +62,11 @@ public class GameHandler extends SimpleChannelInboundHandler<String> {
         }
 
         if (type == ServerBoundType.INIT) {
-            ServerBoundPlayerInitPacket packet = new ServerBoundPlayerInitPacket(playerId);
+            String playerName = jsonPacket.getStr("playerName");
+            if (playerName == null || playerName.isEmpty()) {
+                playerName = RandomUtil.randomString(4);
+            }
+            ServerBoundPlayerInitPacket packet = new ServerBoundPlayerInitPacket(playerName);
             packet.setIndex(index);
             packet.setTimestamp(timestamp);
             gameRoom.handlePlayerInitPacket(ctx, packet);
@@ -75,7 +79,7 @@ public class GameHandler extends SimpleChannelInboundHandler<String> {
             return;
         }
 
-        playerId = player.getId();
+        String playerId = player.getId();
 
         if (type == ServerBoundType.SYNC) {
             ServerBoundPlayerSyncPacket packet = new ServerBoundPlayerSyncPacket(playerId);
@@ -105,7 +109,7 @@ public class GameHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        gameRoom.removePlayer(playerId);
+        gameRoom.removePlayer(gameRoom.getChannels().get(ctx.channel().id()).getId());
         log.info("Client disconnected: {} ", ctx.channel().remoteAddress());
         super.channelInactive(ctx);
     }

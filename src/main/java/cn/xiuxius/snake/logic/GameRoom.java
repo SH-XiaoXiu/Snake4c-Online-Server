@@ -62,6 +62,7 @@ public class GameRoom {
             Player player = channels.get(ctx.channel().id());
             if (player == null) return;
             log.info("Player {} send INIT packet", player.getId());
+            player.setPlayerName(packet.getPlayerName());
             ClientBoundInitPacket p = new ClientBoundInitPacket(player, player.getSnake());
             sendToPlayer(player, p);
         }

@@ -4,6 +4,7 @@ import io.netty.channel.Channel;
 
 public class Player {
     private final String id;
+    private String playerName;
     private final Channel channel;
     private Snake snake;
 
@@ -12,6 +13,14 @@ public class Player {
     }
 
     private Direction latestDirection;
+
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
 
     public Player(String id, Channel channel, Point startPos) {
         this.id = id;
@@ -53,6 +62,7 @@ public class Player {
     public Player toSyncPlayer() {
         Player player = new Player(this.id, null, this.snake.getHead());
         player.setSnake(this.snake);
+        player.setPlayerName(this.playerName);
         return player;
     }
 
